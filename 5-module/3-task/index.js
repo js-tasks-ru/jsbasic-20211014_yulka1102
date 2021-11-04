@@ -1,7 +1,6 @@
 function initCarousel() {
   let btnLeft = document.querySelector('.carousel__arrow_left');
   let btnRight = document.querySelector('.carousel__arrow_right');
-  // let slide = querySelector('.carousel__slide');
 
   let sideBar = document.querySelector('.carousel__inner');
 
@@ -11,42 +10,43 @@ function initCarousel() {
 
   let width = sideBar.offsetWidth;
 
-  // if (activeSlideIndex = 0) {
-  //     btnRight.style.display = '';
-  //     btnLeft.style.display = 'none';
-  //   } else if (activeSlideIndex = slidesCount - 1) {
-  //     btnLeft.style.display = '';
-  //     btnRight.style.display = 'none';
-  //   }
+  sideBar.style.right = `-${(slidesCount - 1) * 100}vw`;
 
-
+  btnLeft.style.display = 'none';
 
   btnLeft.addEventListener('click', () => {
-    if (activeSlideIndex > 0 && activeSlideIndex <= slidesCount - 1 ) {
-    activeSlideIndex--;
-
-    } else {
-      activeSlideIndex = 0;
-      
-    }
-    sideBar.style.transform = `translateX(-${activeSlideIndex * width}px)`;
-
+   changeSlide('left')
   });
 
   btnRight.addEventListener('click', () => {
-    if (activeSlideIndex >= 0 && activeSlideIndex < slidesCount - 1) {
-      activeSlideIndex++;
-      } else {
-      activeSlideIndex = slidesCount - 1;
-    }
-    sideBar.style.left = `-${activeSlideIndex * width}px`;
-    });
+    changeSlide('right')
+  });
 
-    // if (activeSlideIndex = 0) {
-    //   btnRight.style.display = '';
-    //   btnLeft.style.display = 'none';
-    // } else if (activeSlideIndex = slidesCount - 1) {
-    //   btnLeft.style.display = '';
-    //   btnRight.style.display = 'none';
-    // }
+    function changeSlide (direction) {
+      if (direction === 'right') {
+        activeSlideIndex++;
+        btnLeft.style.display = ''
+        if (activeSlideIndex == slidesCount) {
+          activeSlideIndex = slidesCount - 1;
+          btnRight.style.display = 'none';
+        }
+      } else if (direction === 'left') {
+        activeSlideIndex--;
+        btnRight.style.display = '';
+        if (activeSlideIndex < 0) {
+          activeSlideIndex = 0;
+          btnLeft.style.display = 'none'
+        }
+      }
+
+      sideBar.style.transform = `translateX(-${activeSlideIndex * width}px)`
+
+      if (activeSlideIndex == 0) {
+        btnLeft.style.display = 'none';
+        btnRight.style.display = '';
+      } else if (activeSlideIndex == slidesCount - 1) {
+        btnLeft.style.display = '';
+        btnRight.style.display = 'none';
+      }
+    }
 }
