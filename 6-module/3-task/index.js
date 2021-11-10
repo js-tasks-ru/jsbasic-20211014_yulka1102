@@ -5,10 +5,11 @@ export default class Carousel {
   constructor(slides) {
     this.slides = slides;
     this.createSlide();
-    this.elem.querySelector('.carousel__arrow_left').addEventListener('click', () =>{
+    this.activeSlideIndex = 0;
+    this.elem.querySelector('.carousel__arrow_left').addEventListener('click', () => {
       this.changeSlide('left')
     });
-    this.elem.querySelector('.carousel__arrow_right').addEventListener('click', () =>{
+    this.elem.querySelector('.carousel__arrow_right').addEventListener('click', () => {
       this.changeSlide('right')
     });
     this.elem.querySelector('.carousel__arrow_left').style.display = 'none';
@@ -16,7 +17,6 @@ export default class Carousel {
 
   createSlide() {
     this.elem = createElement(`<div class="carousel">
-    
     <div class="carousel__arrow carousel__arrow_right">
       <img src="/assets/images/icons/angle-icon.svg" alt="icon">
     </div>
@@ -44,9 +44,16 @@ export default class Carousel {
   divInner.append(divElem);
   }
   this.elem.append(divInner);
+  let btnsPlus = this.elem.querySelectorAll('.carousel__button');
+  for(let btnPlus of btnsPlus) {
+    let slide = btnPlus.closest('.carousel__slide');
+    btnPlus.addEventListener('click', (event) => {
+      let customEvent = new CustomEvent("product-add", { detail: slide.dataset.id,
+        bubbles: true});
+        this.elem.dispatchEvent(customEvent);
+    });
   }
-
-
+  }
 
   changeSlide(direction) {
 
@@ -56,32 +63,32 @@ export default class Carousel {
   
     let slidesCount = this.elem.querySelectorAll('.carousel__slide').length;
   
-    let activeSlideIndex = 0;
+    
   
     let width = sideBar.offsetWidth;
   
         if (direction === 'right') {
-          activeSlideIndex++;
+          this.activeSlideIndex++;
           btnLeft.style.display = ''
-          if (activeSlideIndex == slidesCount) {
-            activeSlideIndex = slidesCount - 1;
+          if (this.activeSlideIndex == slidesCount) {
+            this.activeSlideIndex = slidesCount - 1;
             btnRight.style.display = 'none';
           }
         } else if (direction === 'left') {
-          activeSlideIndex--;
+          this.activeSlideIndex--;
           btnRight.style.display = '';
-          if (activeSlideIndex < 0) {
-            activeSlideIndex = 0;
+          if (this.activeSlideIndex < 0) {
+            this.activeSlideIndex = 0;
             btnLeft.style.display = 'none'
           }
         }
   
-        sideBar.style.transform = `translateX(-${activeSlideIndex * width}px)`
+        sideBar.style.transform = `translateX(-${this.activeSlideIndex * width}px)`
   
-        if (activeSlideIndex == 0) {
+        if (this.activeSlideIndex == 0) {
           btnLeft.style.display = 'none';
           btnRight.style.display = '';
-        } else if (activeSlideIndex == slidesCount - 1) {
+        } else if (this.activeSlideIndex == slidesCount - 1) {
           btnLeft.style.display = '';
           btnRight.style.display = 'none';
         }
