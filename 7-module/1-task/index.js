@@ -4,46 +4,31 @@ export default class RibbonMenu {
   constructor(categories) {
     this.categories = categories;
     this.createClassRibbon();
+    this.openCategory();
     this.ribbon__inner = this.elem.querySelector('.ribbon__inner');
-    this.scroll_Width = this.ribbon__inner.scrollWidth;
-    this.scroll_left = this.ribbon__inner.scrollLeft;
-    this.client_Width = this.ribbon__inner.clientWidth;
-    this.scroll_right = this.scroll_Width - this.scroll_left - this.client_Width;
+    
+    this.scroll_left = 0;
 
     this.btn_R = this.elem.querySelector('.ribbon__arrow_right');
 
     this.btn_R.addEventListener('click', () => {
-      this.ribbon__inner.scrollBy(350, 0);
-
-      if(this.scroll_right < 1) {
-      this.btn_R.classList.remove('ribbon__arrow_visible');
-      } else if(this.scroll_right > 1) {
-      this.btn_R.classList.add('ribbon__arrow_visible');
-    }
+      this.scrollRight()
     });
 
     this.btn_L = this.elem.querySelector('.ribbon__arrow_left');
 
     this.btn_L.addEventListener('click', () => {
-      this.ribbon__inner.scrollBy(-350, 0);
-
-      if(this.scroll_left == 0) {
-      this.btn_L.classList.remove('ribbon__arrow_visible');
-      } else if(this.scroll_left > 1) {
-      this.btn_L.classList.add('ribbon__arrow_visible');
-    }
+      this.scrollLeft()
     });
     
-    
-
-    this.scroll_left = 0;
     this.btn_R.classList.add('ribbon__arrow_visible');
+    this.btn_L.classList.remove('ribbon__arrow_visible');
   }
 
   createClassRibbon() {
     this.elem = createElement(`
     <div class="ribbon">
-    <button class="ribbon__arrow ribbon__arrow_left">
+    <button class="ribbon__arrow ribbon__arrow_left ribbon__arrow_visible">
       <img src="/assets/images/icons/angle-icon.svg" alt="icon">
     </button>
 
@@ -68,22 +53,50 @@ export default class RibbonMenu {
 
   }
 
-  // scrollRight() {
-  //   this.ribbon__inner.scrollBy(350, 0);
-  //   if(this.scroll_right < 1) {
-  //     this.btn_R.classList.remove('ribbon__arrow_visible');
-  //   } else if(this.scroll_right > 1) {
-  //     this.btn_R.classList.add('ribbon__arrow_visible');
-  //   }
-  // }
+  scrollRight() {
+    let scroll_Width = this.ribbon__inner.scrollWidth;
+    let scroll_left = this.ribbon__inner.scrollLeft;
+    let client_Width = this.ribbon__inner.clientWidth;
+    let scroll_right = scroll_Width - scroll_left - client_Width; 
 
-  // scrollLeft() {
-  //   this.ribbon__inner.scrollBy(-350, 0);
-  //   if(this.scroll_left == 0) {
-  //     this.btn_L.classList.remove('ribbon__arrow_visible');
-  //   } else if(this.scroll_left > 1) {
-  //     this.btn_L.classList.add('ribbon__arrow_visible');
-  //   }
-  // }
+    if(scroll_right < 1) {
+      this.btn_R.classList.remove('ribbon__arrow_visible');
+    } else {
+    this.btn_R.classList.add('ribbon__arrow_visible')
+    }
 
+    this.ribbon__inner.scrollBy(350, 0);
+    this.btn_L.classList.add('ribbon__arrow_visible');
+  }
+
+  scrollLeft() {
+    let scroll_left = this.ribbon__inner.scrollLeft;
+    if(scroll_left == 0) {
+      this.btn_L.classList.remove('ribbon__arrow_visible');
+      } else {
+      this.btn_L.classList.add('ribbon__arrow_visible');
+      this.btn_R.classList.add('ribbon__arrow_visible');
+    }
+      this.ribbon__inner.scrollBy(-350, 0);
+  }
+
+  openCategory() {
+    let links = this.elem.querySelectorAll('a');
+  
+    for(let link of links) {
+      link.addEventListener('click', (event) => {
+        event.preventDefault();
+          let links = this.elem.querySelectorAll('a');
+          for(let link of links) {
+            if(link.classList.contains('ribbon__item_active')) link.classList.remove('ribbon__item_active'); 
+          }
+        link.classList.add('ribbon__item_active');
+
+        let customEvent = new CustomEvent("ribbon-select", { detail: link.dataset.id,
+          bubbles: true});
+          this.elem.dispatchEvent(customEvent);
+      })
+    }
+  }
 }
+
