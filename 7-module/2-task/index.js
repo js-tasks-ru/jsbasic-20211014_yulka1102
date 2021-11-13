@@ -27,18 +27,23 @@ export default class Modal {
   
     </div>`);
 
-    this.elem.querySelector('.modal__close').addEventListener('click', () =>  this.close());
-    this.elem.removeEventListener('click', () => this.close());
+    // this.elem.querySelector('.modal__close').addEventListener('click', () =>  this.close());
+    // this.elem.removeEventListener('click', () => this.close());
 
-    document.addEventListener('keydown', () => this.closeKey());
-    document.removeEventListener('keydown', () => this.closeKey())
+    // document.addEventListener('keydown', () => this.closeKey());
+    // document.removeEventListener('keydown', () => this.closeKey())
   }
 
   open() {
     document.body.classList.add('is-modal-open');
-    document.body.querySelector('.container').append(this.elem);
+    document.body.append(this.elem);
     document.body.querySelector('.button').style.display = 'none';
     
+    this.elem.querySelector('.modal__close').addEventListener('click', (event) =>  this.close(event));
+    this.elem.removeEventListener('click', (event) => this.close(event));
+
+    document.addEventListener('keydown', (event) => this.closeKey(event));
+    document.removeEventListener('keydown', (event) => this.closeKey(event))
   }
 
   setTitle(title) {
@@ -51,12 +56,15 @@ export default class Modal {
   }
 
   close() {
-    this.elem.remove();
+    if(this.elem) {
+      this.elem.remove();
+    }
+    
     document.body.classList.remove('is-modal-open');
     document.body.querySelector('.button').style.display = '';
   }
 
-  closeKey() {
+  closeKey(event) {
     if(event.code === 'Escape') {
       this.close();
     }
