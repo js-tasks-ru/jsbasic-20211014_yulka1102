@@ -6,6 +6,7 @@ export default class Carousel {
     this.slides = slides;
     this.createSlide();
     this.activeSlideIndex = 0;
+    this.addToCart();
     this.elem.querySelector('.carousel__arrow_left').addEventListener('click', () => {
       this.changeSlide('left')
     });
@@ -44,15 +45,7 @@ export default class Carousel {
   divInner.append(divElem);
   }
   this.elem.append(divInner);
-  let btnsPlus = this.elem.querySelectorAll('.carousel__button');
-  for(let btnPlus of btnsPlus) {
-    let slide = btnPlus.closest('.carousel__slide');
-    btnPlus.addEventListener('click', (event) => {
-      let customEvent = new CustomEvent("product-add", { detail: slide.dataset.id,
-        bubbles: true});
-        this.elem.dispatchEvent(customEvent);
-    });
-  }
+  
   }
 
   changeSlide(direction) {
@@ -93,6 +86,19 @@ export default class Carousel {
           btnRight.style.display = 'none';
         }
     
+  }
+
+  addToCart() {
+    let btnsPlus = this.elem.querySelectorAll('.carousel__button');
+  for(let btnPlus of btnsPlus) {
+    let slide = btnPlus.closest('.carousel__slide');
+    btnPlus.addEventListener('click', (event) => {
+      let customEvent = new CustomEvent("product-add", { detail: slide.dataset.id,
+        bubbles: true});
+        this.elem.dispatchEvent(customEvent);
+    });
+  }
+
   }
 
 }
