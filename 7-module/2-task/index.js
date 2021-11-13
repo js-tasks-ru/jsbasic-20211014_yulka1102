@@ -2,7 +2,6 @@ import createElement from '../../assets/lib/create-element.js';
 
 export default class Modal {
   constructor() {
-    // this.open();
     this.elem = createElement(`
     <div class="modal">
       <!--Прозрачная подложка перекрывающая интерфейс-->
@@ -27,23 +26,16 @@ export default class Modal {
   
     </div>`);
 
-    // this.elem.querySelector('.modal__close').addEventListener('click', () =>  this.close());
-    // this.elem.removeEventListener('click', () => this.close());
-
-    // document.addEventListener('keydown', () => this.closeKey());
-    // document.removeEventListener('keydown', () => this.closeKey())
   }
 
   open() {
     document.body.classList.add('is-modal-open');
     document.body.append(this.elem);
-    document.body.querySelector('.button').style.display = 'none';
     
-    this.elem.querySelector('.modal__close').addEventListener('click', (event) =>  this.close(event));
-    this.elem.removeEventListener('click', (event) => this.close(event));
-
-    document.addEventListener('keydown', (event) => this.closeKey(event));
-    document.removeEventListener('keydown', (event) => this.closeKey(event))
+    this.elem.querySelector('.modal__close').addEventListener('click', this.closeButton);
+    
+    document.addEventListener('keydown', this.closeKey);
+    
   }
 
   setTitle(title) {
@@ -55,18 +47,26 @@ export default class Modal {
   this.elem.querySelector('.modal__body').append(node);
   }
 
-  close() {
+  closeButton = (event) => {
     if(this.elem) {
       this.elem.remove();
     }
-    
     document.body.classList.remove('is-modal-open');
-    document.body.querySelector('.button').style.display = '';
+    this.elem.querySelector('.modal__close').removeEventListener('click', this.closeButton);
   }
 
-  closeKey(event) {
+  closeKey = (event) => {
     if(event.code === 'Escape') {
-      this.close();
+      this.elem.remove();
+      document.body.classList.remove('is-modal-open');
+    }
+    document.removeEventListener('keydown', this.closeKey)
+  }
+
+  close() {
+    if(this.elem) {
+      this.elem.remove();
+      document.body.classList.remove('is-modal-open');
     }
   }
 }
