@@ -2,9 +2,7 @@ import createElement from '../../assets/lib/create-element.js';
 
 export default class Modal {
   constructor() {
-    this.open();
-    this.setTitle;
-    this.setBody;
+    // this.open();
     this.elem = createElement(`
     <div class="modal">
       <!--Прозрачная подложка перекрывающая интерфейс-->
@@ -23,31 +21,24 @@ export default class Modal {
         </div>
   
         <div class="modal__body">
-          
+          hgjghjg
         </div>
       </div>
   
     </div>`);
 
-    this.elem.querySelector('.modal__close').addEventListener('click', () => {
-      this.close();
-      
-    });
+    this.elem.querySelector('.modal__close').addEventListener('click', () =>  this.close());
     this.elem.removeEventListener('click', () => this.close());
-    document.addEventListener('keydown', () => {
-      if(event.code === 'Escape') {
-        this.close();
-      }
-      
-    });
-    document.removeEventListener('keydown', () => this.close())
+
+    document.addEventListener('keydown', () => this.closeKey());
+    document.removeEventListener('keydown', () => this.closeKey())
   }
 
   open() {
     document.body.classList.add('is-modal-open');
     document.body.querySelector('.container').append(this.elem);
     document.body.querySelector('.button').style.display = 'none';
-    // document.body.querySelector('.button').nextSibling.remove();
+    
   }
 
   setTitle(title) {
@@ -55,7 +46,7 @@ export default class Modal {
   }
 
   setBody(node) {
-  
+  this.elem.querySelector('.modal__body').innerHTML = '';
   this.elem.querySelector('.modal__body').append(node);
   }
 
@@ -63,6 +54,11 @@ export default class Modal {
     this.elem.remove();
     document.body.classList.remove('is-modal-open');
     document.body.querySelector('.button').style.display = '';
-    document.body.querySelector('.container').lastChild.remove();
+  }
+
+  closeKey() {
+    if(event.code === 'Escape') {
+      this.close();
+    }
   }
 }
