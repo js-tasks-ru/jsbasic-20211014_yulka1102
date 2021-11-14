@@ -62,5 +62,4 @@ export default class StepSlider {
     })
     this.elem.dispatchEvent(customEvent);
   }
-
 }
