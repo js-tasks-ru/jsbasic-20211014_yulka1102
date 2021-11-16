@@ -71,7 +71,7 @@ export default class StepSlider {
 
   start = (event) => {
     event.preventDefault();
-    this.thumb.classList.add('slider_dragging');
+    document.querySelector('.slider').classList.add('slider_dragging');
       document.addEventListener('pointermove', this.moveOn);
       document.addEventListener('pointerup', this.moveEnd);
 
@@ -83,7 +83,7 @@ export default class StepSlider {
 
       let target = this.elem.getBoundingClientRect();
       
-      let newPosition = event.pageX - target.left;
+      let newPosition = event.clientX - target.left;
 
       if(newPosition < 0) {
         newPosition = 0;
@@ -102,20 +102,17 @@ export default class StepSlider {
     moveEnd = (event) => {
       let slider = document.querySelector('.slider');
       let target = this.elem.getBoundingClientRect();
-      let newPosition = event.pageX - target.left;
+      let newPosition = event.clientX - target.left;
       if(newPosition < 0) {
         newPosition = 0;
       }else if(newPosition > slider.offsetWidth) {
         newPosition = slider.offsetWidth;
       }
       let x = newPosition / target.width;
-      let ind1 = Math.round(x * (this.steps - 1));
-      let slide = (100/(this.steps - 1)) * ind1;
-      this.elem.querySelector('.slider__thumb').style.left = `${slide}%`
-      this.elem.querySelector('.slider__progress').style.width = `${slide}%`
-      this.elem.querySelector('.slider__value').innerHTML = Math.round(ind1);
-
-      this.thumb.classList.remove('slider_dragging');
+      let ind1 = x * (this.steps - 1);
+      this.value = Math.round(ind1);
+      this.onClick();
+      document.querySelector('.slider').classList.remove('slider_dragging');
       document.removeEventListener('pointermove', this.moveOn);
       document.removeEventListener('pointerup', this.moveEnd);
     }
