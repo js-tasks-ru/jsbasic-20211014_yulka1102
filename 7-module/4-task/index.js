@@ -111,6 +111,10 @@ export default class StepSlider {
       let x = newPosition / target.width;
       let ind1 = x * (this.steps - 1);
       this.value = Math.round(ind1);
+      let slide = (100/(this.steps - 1)) * this.value;
+      this.elem.querySelector('.slider__thumb').style.left = `${slide}%`
+      this.elem.querySelector('.slider__progress').style.width = `${slide}%`
+      this.elem.querySelector('.slider__value').innerHTML = this.value;
       this.onClick();
       document.querySelector('.slider').classList.remove('slider_dragging');
       document.removeEventListener('pointermove', this.moveOn);
