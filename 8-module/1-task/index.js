@@ -40,20 +40,22 @@ export default class CartIcon {
 
   updatePosition() {
     if(this.elem.offsetWidth) {
-      if(document.documentElement.clientWidth <= 767) return;
+      if(document.documentElement.clientWidth <= 767) {
+        this.elem.removeAttribute('style')
+      };
 
       let header = document.querySelector('header');
       let headerCoords = header.getBoundingClientRect();
      
       if(window.pageYOffset >= headerCoords.bottom) {
       this.elem.style.position = 'fixed';
-      let firstElemInContainer = document.querySelector('.products-grid');
-      let coords = firstElemInContainer.getBoundingClientRect();
+      let firstElemContainer = document.querySelector('.container');
+      let coords = firstElemContainer.getBoundingClientRect();
       this.elem.style.left = `${coords.right + 20}px`
       this.elem.style.top = `50px`;
       this.elem.style.right = `10px`
       } else {
-        this.elem.style.cssText = ''
+        this.elem.removeAttribute('style')
       }
       
     }
