@@ -7,9 +7,7 @@ export default class ProductGrid {
     this.products = products;
     this.filters = {};
     this.createProductList();
-    let productList = new ProductCard(this.products);
-    this.list = this.elem.querySelector('.products-grid__inner');
-    list.append(productList);
+    this.createList();
   }
 
   createProductList() {
@@ -19,5 +17,13 @@ export default class ProductGrid {
        
       </div>
     </div>`);
+  }
+
+  createList() {
+    for(let product of this.products) {
+      let productList = new ProductCard(product);
+      let list = this.elem.querySelector('.products-grid__inner');
+      list.append(productList.elem);
+    }
   }
 }

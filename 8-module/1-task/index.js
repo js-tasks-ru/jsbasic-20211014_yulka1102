@@ -40,23 +40,41 @@ export default class CartIcon {
 
   updatePosition() {
     if(this.elem.offsetWidth) {
-      if(document.documentElement.clientWidth <= 767) {
-        this.elem.removeAttribute('style')
+      let firstElemContainer = document.querySelector('.container');
+      let coordsContainer = firstElemContainer.getBoundingClientRect();
+      let iconCoords = this.elem.getBoundingClientRect();
+      // let initialCoord = iconCoords.top + window.pageYOffset;
+      let isMobile = document.documentElement.clientWidth <= 767;
+      if (window.pageYOffset >= iconCoords.top) {
+        let leftIndent = Math.min(coordsContainer.right + 20,
+          document.documentElement.clientWidth - this.elem.clientWidth - 10) + 'px';
+
+        Object.assign(this.elem.style, {
+          position: 'fixed',
+          top: '50px',
+          zIndex: 1000,
+          right: '10px',
+          left: leftIndent
+          });
+
+      } else {
+        Object.assign(this.elem.style, {
+          position: '',
+          top: '',
+          zIndex: '',
+          left: ''
+          });
       };
 
-      let header = document.querySelector('header');
-      let headerCoords = header.getBoundingClientRect();
-     
-      if(window.pageYOffset >= headerCoords.bottom) {
-      this.elem.style.position = 'fixed';
-      let firstElemContainer = document.querySelector('.container');
-      let coords = firstElemContainer.getBoundingClientRect();
-      this.elem.style.left = `${coords.right + 20}px`
-      this.elem.style.top = `50px`;
-      this.elem.style.right = `10px`
-      } else {
-        this.elem.removeAttribute('style')
+      if(isMobile) {
+        Object.assign(this.elem.style, {
+          position: '',
+          top: '',
+          zIndex: '',
+          left: ''
+          });
       }
+
       
     }
     
