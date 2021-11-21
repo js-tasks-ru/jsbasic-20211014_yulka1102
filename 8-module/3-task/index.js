@@ -3,33 +3,43 @@ export default class Cart {
 
   constructor(cartIcon) {
     this.cartIcon = cartIcon;
-    this.addProduct();
-    this.updateProductCount();
+    let product, productId, amount;
+    this.addProduct(product);
+    this.updateProductCount(productId, amount);
     this.isEmpty();
   }
 
   addProduct(product) {
     let target = this.cartItems.find(item => item.product.id == product.id);
+    let cartItem, count;
     if(target) {
-      for(let cartItem of this.cartItems) {
+      for(cartItem of this.cartItems) {
         if(cartItem.product.id == product.id) cartItem.count++
       }
     } else {
-      let cartItem = {};
-      cartItem.product = product;
-      cartItem.count = 1;
+      cartItem = {};
+      Object.assign(cartItem, product, count = 1)
+      
       this.cartItems.push(cartItem);
+    }
+
+    if(product==null || product==undefined) {
+      this.cartItems;
     }
 
     this.onProductUpdate(cartItem);
   }
 
   updateProductCount(productId, amount) {
+    if(productId==undefined || amount==undefined) {
+      this.cartItems;
+    }
+    
     for(let cartItem of this.cartItems) {
       if(cartItem.product.id == productId) {
         cartItem.count + amount;
         if(cartItem.count == 0) {
-          delete cartItem;
+          this.cartItems.filter(item => item.count > 0)
         }
       }
     }
@@ -39,7 +49,7 @@ export default class Cart {
 
   isEmpty() {
     if(this.cartItems.length == 0) return true;
-    if(this.cartItem.length > 0) return false;
+    if(this.cartItems.length > 0) return false;
   }
 
   getTotalCount() {
@@ -52,7 +62,7 @@ export default class Cart {
   getTotalPrice() {
     let totalPrice = 0;
     for(let i = 0; i < this.cartItems.length; i++) {
-      totalPrice += this.cartItems[i].product.price;
+      totalPrice += this.cartItems[i].product.price * this.cartItems[i].count;
     }
   }
 
