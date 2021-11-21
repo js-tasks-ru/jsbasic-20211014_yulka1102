@@ -9,6 +9,7 @@ export default class ProductGrid {
     this.createProductList();
     this.updateFilter();
     this.filteredProducts3;
+
   }
 
   createProductList() {
@@ -25,7 +26,7 @@ export default class ProductGrid {
     
     Object.assign(this.filters, filters);
 
-    console.log(this.filters);
+    // console.log(this.filters);
 
     let filteredProducts, 
     filteredProducts1, 
@@ -56,14 +57,12 @@ export default class ProductGrid {
       this.filteredProducts3 = filteredProducts2;
     }
 
-    // this.products = this.filteredProducts3;
-    console.log(this.filteredProducts3)
-    
-    // console.log(this.products)
+    // console.log(this.filteredProducts3)
+    let list = this.elem.querySelector('.products-grid__inner')
+    list.innerHTML = ''
 
     for(let item of this.filteredProducts3) {
       let productList = new ProductCard(item);
-      let list = this.elem.querySelector('.products-grid__inner');
       list.append(productList.elem);
     }
 
