@@ -43,17 +43,17 @@ export default class Cart {
     } 
 
     let cartItem = this.cartItems.find(item => item.product.id == productId);
+    
       if(cartItem.count >= 1) {
       cartItem.count += amount;
       if(cartItem.count == 0) {
-        let check = this.cartItems.filter(item => item.product.id !== productId)
-         if(check.length < 1) {
-           this.cartItems = [];
-         }
-       }
+        this.cartItems = this.cartItems.filter(item => item.count !== 0);
+      }
+      console.log(this.cartItems)
+        this.onProductUpdate(cartItem);
     }
         
-   this.onProductUpdate(cartItem);
+   
   }
 
   isEmpty() {
@@ -140,7 +140,9 @@ export default class Cart {
   renderModal() {
     this.modal.setTitle('Your order');
     let div = document.createElement('div');
+  
     for(let cartItem of this.cartItems) {
+      
       let product = cartItem.product;
       let count = cartItem.count;
       let node = this.renderProduct(product, count);
@@ -175,7 +177,7 @@ export default class Cart {
 
   onProductUpdate(cartItem) {
     this.cartIcon.update(this);
-
+    
     if(this.cartItems.length == 0) this.modal.close();
 
     if(document.body.classList.contains('is-modal-open')) {
@@ -183,6 +185,10 @@ export default class Cart {
       let productId = cartItem.product.id;
       let productCount = modalBody.querySelector(`[data-product-id="${productId}"] .cart-counter__count`); 
       let productPrice = modalBody.querySelector(`[data-product-id="${productId}"] .cart-product__price`);
+      if(cartItem.count == 0) {
+        let item = modalBody.querySelector(`div[data-product-id="${cartItem.product.id}"]`);
+        item.remove();
+      } 
       productCount.innerHTML = cartItem.count;
       productPrice.innerHTML = `€${(cartItem.product.price*cartItem.count).toFixed(2)}`
       let infoPrice = modalBody.querySelector(`.cart-buttons__info-price`);
@@ -198,13 +204,13 @@ export default class Cart {
     button.classList.add('is-loading');
     let form = document.querySelector('.cart-form');
     let formData = new FormData(form);
-    let url = 'https://httpbin.org/post'
+    let url = 'https://httpbin.org/post';
+    
     fetch(url, {
       method: 'POST',
       body: formData
     })
     .then(() => {
-      this.cartItems.length = 0;
       this.modal.setTitle('Success!');
       let node = createElement(`<div class="modal__body-inner">
       <p>
@@ -214,7 +220,10 @@ export default class Cart {
       </p>
     </div>`)
       this.modal.setBody(node);
+      this.cartItems.length = 0;
+      this.cartIcon.update(this);
     })
+   
   };
 
   addEventListeners() {
