@@ -49,7 +49,6 @@ export default class Cart {
       if(cartItem.count == 0) {
         this.cartItems = this.cartItems.filter(item => item.count !== 0);
       }
-      console.log(this.cartItems)
         this.onProductUpdate(cartItem);
     }
         
