@@ -1,10 +1,8 @@
 export default class Cart {
-  cartItems = []; // [product: {...}, count: N]
+  cartItems = [];
 
   constructor(cartIcon) {
     this.cartIcon = cartIcon;
-    // this.getTotalCount();
-    // this.getTotalPrice();
   }
 
   addProduct(product) {
@@ -27,7 +25,6 @@ export default class Cart {
     } else {
       this.cartItems.push(cartItem);
     }
-    // console.log(this.cartItems);
     }
     this.onProductUpdate(cartItem); 
   }
@@ -84,7 +81,6 @@ export default class Cart {
   }
 
   onProductUpdate(cartItem) {
-    // реализуем в следующей задаче
 
     this.cartIcon.update(this);
   }
