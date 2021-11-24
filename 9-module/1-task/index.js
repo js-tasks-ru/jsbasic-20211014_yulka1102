@@ -1,9 +1,9 @@
 export default function promiseClick(button) {
-  button = document.body.closest('button');
- return button.addEventListener('click', (event) => {
-   new Promise((resolve) => {
-    resolve(event.type);
-    })
-  }, {once: true})
+ return new Promise((resolve) => {
+   button.addEventListener('click', (event) => {
+    resolve(event);
+   }, {once: true})
+ })
 }
-promiseClick(button).then((event) => console.log(event));
+// promiseClick(button)
+//   .then((event) => console.log(event));
