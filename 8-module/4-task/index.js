@@ -8,7 +8,7 @@ export default class Cart {
 
   constructor(cartIcon) {
     this.cartIcon = cartIcon;
-
+    
     this.addEventListeners();
     this.modal = new Modal;
   }
@@ -16,7 +16,7 @@ export default class Cart {
   addProduct(product) {
     let cartItem = {};
 
-    if(product==null || product==undefined || null || undefined) {
+    if(product==null || product==undefined) {
       cartItem = null;
     } else {
       cartItem.product = product;
@@ -56,8 +56,7 @@ export default class Cart {
   }
 
   isEmpty() {
-    if(this.cartItems.length == 0) return true;
-    if(this.cartItems.length > 0) return false;
+   return this.cartItems.length === 0;
   }
 
   getTotalCount() {
@@ -153,25 +152,26 @@ export default class Cart {
     this.modal.setBody(div);
     this.modal.open();
 
-    div.addEventListener('click', (event) => {
-      let button = event.target.closest('.cart-counter__button');
-      if (!button) {
-        return;
-      }
-      let amount;
-      if(button.classList.contains('cart-counter__button_minus')) {
-        amount = -1;
-      } else {
-        amount = 1;
-      }
-      let targetDiv = event.target.closest('div.cart-product');
-      let productId = targetDiv.dataset.productId;
-
-      this.updateProductCount(productId, amount)
-      
-    });
-
+    div.addEventListener('click', this.onBtnClick);
     form.addEventListener('submit', this.onSubmit);
+  }
+
+  onBtnClick = (event) => {
+    let button = event.target.closest('.cart-counter__button');
+    if (!button) {
+      return;
+    }
+    let amount;
+    if(button.classList.contains('cart-counter__button_minus')) {
+      amount = -1;
+    } else {
+      amount = 1;
+    }
+    let targetDiv = event.target.closest('div.cart-product');
+    let productId = targetDiv.dataset.productId;
+
+    this.updateProductCount(productId, amount)
+    
   }
 
   onProductUpdate(cartItem) {
@@ -227,6 +227,7 @@ export default class Cart {
 
   addEventListeners() {
     this.cartIcon.elem.onclick = () => this.renderModal();
+
   }
 }
 
