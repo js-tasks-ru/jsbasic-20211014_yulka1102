@@ -28,8 +28,6 @@ export default class ProductGrid {
     
     Object.assign(this.filters, filters);
 
-    // console.log(this.filters);
-
     let filteredProducts, 
     filteredProducts1, 
     filteredProducts2;
@@ -59,7 +57,6 @@ export default class ProductGrid {
       this.filteredProducts3 = filteredProducts2;
     }
 
-    // console.log(this.filteredProducts3)
     let list = this.elem.querySelector('.products-grid__inner')
     list.innerHTML = ''
 
