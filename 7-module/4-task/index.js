@@ -72,8 +72,8 @@ export default class StepSlider {
   start = (event) => {
     event.preventDefault();
     document.querySelector('.slider').classList.add('slider_dragging');
-      document.addEventListener('pointermove', this.moveOn);
-      document.addEventListener('pointerup', this.moveEnd);
+    document.addEventListener('pointermove', this.moveOn);
+    document.addEventListener('pointerup', this.moveEnd);
 
     }
 
